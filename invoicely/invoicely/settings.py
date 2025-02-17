@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'djoser',
     'django_extensions',
 
-    'apps.client'
+    'apps.client',
+    'apps.team',
 ]
 
 MIDDLEWARE = [

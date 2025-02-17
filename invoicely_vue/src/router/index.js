@@ -8,6 +8,7 @@ import Clients from '../views/dashboard/Clients.vue'
 import Client from '../views/dashboard/Client.vue'
 import AddClient from '../views/dashboard/AddClient.vue'
 import EditClient from '../views/dashboard/EditClient.vue'
+import EditTeam from '../views/dashboard/EditTeam.vue'
 
 import store from '../store'
 
@@ -82,7 +83,15 @@ const routes = [
     meta: {
       requireLogin: true
     }
-  }
+  },
+  {
+    path: '/dashboard/my-account/edit-team',
+    name: 'EditTeam',
+    component: EditTeam,
+    meta: {
+      requireLogin: true
+    }
+  },
 ]
 
 const router = createRouter({
