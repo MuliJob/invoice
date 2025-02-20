@@ -30,6 +30,20 @@
           <p v-if="invoice.client.country">{{ invoice.client.country }}</p>
         </div>
       </div>
+
+      <div class="column is-12">
+        <h2 class="is-size-5 mb-4">Items</h2>
+
+        <ItemForm
+          v-for="item in invoice.items"
+          v-bind:key="item.item_num"
+          v-bind:initialItem="item"
+        ></ItemForm>
+
+        <button class="button is-light" @click="addItem">
+          +
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -37,13 +51,27 @@
 <script>
 import axios from 'axios';
 import { toast } from 'bulma-toast';
+import ItemForm from '@/components/ItemForm.vue';
 
 export default {
   name: "AddInvoice",
+  components: {
+    ItemForm
+  },
   data() {
     return {
       invoice: {
-        client: ''
+        client: '',
+        items: [
+          {
+            item_num: 0,
+            title: '',
+            unit_price: '',
+            quantity: 1,
+            vat_rate: 0,
+            net_amount: 0
+          }
+        ]
       },
       clients: []
     }
@@ -61,7 +89,25 @@ export default {
         .catch(error => {
           console.log(JSON.stringify(error))
         })
+    },
+    addItem() {
+      this.invoice.items.push(
+        {
+            item_num: this.invoice.items.length,
+            title: '',
+            unit_price: '',
+            quantity: 1,
+            vat_rate: 0,
+            net_amount: 0
+          }
+      )
     }
   }
 }
 </script>
+
+<style lang="scss">
+  .select, .select select {
+    width: 100%;
+  }
+</style>
