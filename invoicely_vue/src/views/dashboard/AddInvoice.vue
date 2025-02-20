@@ -38,12 +38,21 @@
           v-for="item in invoice.items"
           v-bind:key="item.item_num"
           v-bind:initialItem="item"
+          v-on:updatePrice="updateTotals"
         ></ItemForm>
 
         <button class="button is-light" @click="addItem">
           +
         </button>
       </div>
+    </div>
+
+    <div class="column is-12">
+      <h2 class="is-size-5 mb-4">Total</h2>
+
+      <p><strong>Net amount</strong>: {{ invoice.net_amount }}</p>
+      <p><strong>Vat amount</strong>: {{ invoice.vat_amount }}</p>
+      <p><strong>Gross amount</strong>: {{ invoice.gross_amount }}</p>
     </div>
   </div>
 </template>
@@ -71,7 +80,10 @@ export default {
             vat_rate: 0,
             net_amount: 0
           }
-        ]
+        ],
+        net_amount: 0,
+        vat_amount: 0,
+        gross_amount: 0
       },
       clients: []
     }
@@ -101,6 +113,26 @@ export default {
             net_amount: 0
           }
       )
+    },
+    updateTotals(changedItem) {
+      let net_amount = 0
+      let vat_amount = 0
+
+      let item = this.invoice.items.filter(i => i.item_num === changedItem.item_num)
+
+      item = changedItem
+
+      for (let i=0; i<this.invoice.items.length; i++) {
+        const vat_rate = this.invoice.items[i].vat_rate
+
+        vat_amount += this.invoice.items[i].net_amount * (vat_rate/100)
+        net_amount += this.invoice.items[i].net_amount
+      }
+
+      this.invoice.net_amount = net_amount
+      this.invoice.vat_amount = vat_amount
+      this.invoice.gross_amount = net_amount + vat_amount
+      this.invoice.discount_amount = 0
     }
   }
 }

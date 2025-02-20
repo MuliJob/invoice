@@ -72,6 +72,8 @@ export default {
 
       this.item.net_amount = unit_price * quantity
 
+      this.$emit('updatePrice', this.item)
+      
       return this.item.net_amount + (this.item.net_amount *(vat_rate / 100))
     }
   }
