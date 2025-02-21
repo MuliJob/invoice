@@ -23,7 +23,7 @@
               v-bind:key="invoice.id"
             >
               <td>{{ invoice.id }}</td>
-              <td>{{ invoice.client }}</td>
+              <td>{{ invoice.client_name }}</td>
               <td>{{ invoice.gross_amount }}</td>
               <td>{{ invoice.is_paid }}</td>
               <td><router-link :to="{ name: 'Invoice', params: { id: invoice.id }}">Details</router-link></td>

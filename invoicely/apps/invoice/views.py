@@ -1,9 +1,10 @@
 from rest_framework import viewsets
 
+from django.core.exceptions import PermissionDenied
+
 from .serializers import InvoiceSerializer, ItemSerializer
 from .models import Invoice, Item
 
-from django.core.exceptions import PermissionDenied
 
 class InvoiceViewSet(viewsets.ModelViewSet):
     """Invoice ViewSet"""
@@ -15,7 +16,15 @@ class InvoiceViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         team = self.request.user.teams.first()
-        serializer.save(created_by=self.request.user, team=team)
+        invoice_number = team.first_invoice_number
+        team.first_invoice_number = invoice_number + 1
+        team.save()
+
+        serializer.save(
+            created_by=self.request.user,
+            team=team,
+            modified_by=self.request.user,
+            invoice_number=invoice_number)
 
     def perform_update(self, serializer):
         obj = self.get_object()
