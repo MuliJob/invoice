@@ -71,7 +71,7 @@ export default {
       const vat_rate = this.item.vat_rate
 
       this.item.net_amount = unit_price * quantity
-
+models
       this.$emit('updatePrice', this.item)
       
       return this.item.net_amount + (this.item.net_amount *(vat_rate / 100))

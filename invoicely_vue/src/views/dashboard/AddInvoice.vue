@@ -54,6 +54,10 @@
       <p><strong>Vat amount</strong>: {{ invoice.vat_amount }}</p>
       <p><strong>Gross amount</strong>: {{ invoice.gross_amount }}</p>
     </div>
+
+    <div class="column is-12">
+      <button class="button is-success" @click="submitForm">Save</button>
+    </div>
   </div>
 </template>
 
@@ -133,6 +137,36 @@ export default {
       this.invoice.vat_amount = vat_amount
       this.invoice.gross_amount = net_amount + vat_amount
       this.invoice.discount_amount = 0
+    },
+    submitForm() {
+      this.invoice.client_name = this.invoice.client.name
+      this.invoice.client_email = this.invoice.client.email
+      this.invoice.client_id_number = this.invoice.client.id_number
+      this.invoice.client_address1 = this.invoice.client.address1
+      this.invoice.client_address2 = this.invoice.client.address2
+      this.invoice.client_zipcode = this.invoice.client.zipcode
+      this.invoice.client_place = this.invoice.client.place
+      this.invoice.client_country = this.invoice.client.country
+      this.invoice.client_contact_person = this.invoice.client.contact_person
+      this.invoice.client_contact_reference = this.invoice.client.contact_reference
+      this.invoice.client = this.invoice.client.id
+
+      axios
+        .post("http://127.0.0.1:8000/api/v1/invoices/", this.invoice)
+        .then(response => {
+          toast({
+            message: 'The invoice was added',
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: 'bottom-right',
+          })
+          this.$router.push('/dashboard/invoices')
+        })
+        .catch(error => {
+          console.log(JSON.stringify(error))
+        })
     }
   }
 }
