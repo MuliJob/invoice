@@ -22,7 +22,6 @@
         <table class="table is-fullwidth">
           <thead>
             <tr>
-              <td>#</td>
               <td>Title</td>
               <td>Quantity</td>
               <td>Amount</td>
@@ -34,7 +33,6 @@
               v-for="item in items"
               v-bind:key="item.id"
             >
-              <td>{{ item.id }}</td>
               <td>{{ item.title }}</td>
               <td>{{ item.quantity }}</td>
               <td>{{ item.net_amount }}</td>
