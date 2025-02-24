@@ -53,13 +53,13 @@ export default {
           this.$router.push("/")
         })
         .catch(error => {
-        if (error.response) {
-          console.log(JSON.stringify(error.response.data))
-        } else if (error.message) {
-          console.log(JSON.stringify(error.message))
-        } else {
-          console.log(JSON.stringify(error))
-        }
+          if (error.response) {
+            console.log(JSON.stringify(error.response.data))
+          } else if (error.message) {
+            console.log(JSON.stringify(error.message))
+          } else {
+            console.log(JSON.stringify(error))
+          }
       })
     }
   }

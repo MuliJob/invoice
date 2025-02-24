@@ -63,33 +63,35 @@ export default {
         }
 
         await axios
-          .post('http://127.0.0.1:8000/api/v1/token/login/', formData)
-          .then(response => {
-            const token = response.data.auth_token
+            .post('http://127.0.0.1:8000/api/v1/token/login/', formData)
+            .then(response => {
+              const token = response.data.auth_token
 
-            this.$store.commit('setToken', token)
+              this.$store.commit('setToken', token)
 
-            axios.defaults.headers.common['Authorization'] = 'Token ' + token
+              axios.defaults.headers.common['Authorization'] = 'Token ' + token
 
-            localStorage.setItem("token", token)
-          })
-          .catch(error => {
-            if (error.response) {
-              for (const property in error.response.data) {
-                this.errors.push(`${property}: ${error.response.data[property]}`)
+              localStorage.setItem("token", token)
+
+            })
+            .catch(error => {
+              if (error.response) {
+                for (const property in error.response.data) {
+                  this.errors.push(`${property}: ${error.response.data[property]}`)
+                }
+                console.log(JSON.stringify(error.response.data))
+              } else if (error.message) {
+                console.log(JSON.stringify(error.message))
+              } else {
+                console.log(JSON.stringify(error))
               }
-              console.log(JSON.stringify(error.response.data))
-            } else if (error.message) {
-              console.log(JSON.stringify(error.message))
-            } else {
-              console.log(JSON.stringify(error))
-            }
-          })
+            })
+
         axios
           .get('http://127.0.0.1:8000/api/v1/users/me')
           .then(response => {
-            this.store.commit('setUser', {
-              'username': response.data.username,
+            this.$store.commit('setUser', {
+            'username': response.data.username,
             'id': response.data.id
             })
             localStorage.setItem('username', response.data.username)
