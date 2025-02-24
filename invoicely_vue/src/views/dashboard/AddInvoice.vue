@@ -126,10 +126,10 @@ export default {
 
       item = changedItem
 
-      for (let i=0; i<this.invoice.items.length; i++) {
+      for (let i=0; i < this.invoice.items.length; i++) {
         const vat_rate = this.invoice.items[i].vat_rate
 
-        vat_amount += this.invoice.items[i].net_amount * (vat_rate/100)
+        vat_amount += this.invoice.items[i].net_amount * (vat_rate / 100)
         net_amount += this.invoice.items[i].net_amount
       }
 
