@@ -48,6 +48,26 @@
     </div>
 
     <div class="column is-12">
+      <h2 class="is-size-5 mb-4">Misc</h2>
+
+      <div class="field">
+        <label>Due days</label>
+
+        <div class="control">
+          <input type="number" class="input" v-model="invoice.due_days">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Sender reference</label>
+
+        <div class="control">
+          <input type="text" class="input" v-model="invoice.sender_reference">
+        </div>
+      </div>
+    </div>
+
+    <div class="column is-12">
       <h2 class="is-size-5 mb-4">Total</h2>
 
       <p><strong>Net amount</strong>: {{ invoice.net_amount }}</p>
@@ -85,6 +105,7 @@ export default {
             net_amount: 0
           }
         ],
+        due_days: 14,
         net_amount: 0,
         vat_amount: 0,
         gross_amount: 0
