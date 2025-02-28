@@ -1,3 +1,5 @@
+import decimal
+from datetime import timedelta
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -50,6 +52,10 @@ class Invoice(models.Model):
         """Meta Class"""
         ordering = ("-created_at",)
 
+    def get_due_date(self):
+        """getting due date"""
+        return self.created_at + timedelta(days=self.due_days)
+
 class Item(models.Model):
     """Items Model"""
     invoice = models.ForeignKey(Invoice, related_name='items', on_delete=models.CASCADE)
@@ -61,3 +67,8 @@ class Item(models.Model):
     discount = models.IntegerField(default=0)
 
     objects = models.Manager()
+
+    def get_gross_amount(self):
+        """getting gross amount"""
+        vat_rate = decimal.Decimal(self.vat_rate/100)
+        return self.net_amount + (self.net_amount + vat_rate)
