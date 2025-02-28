@@ -34,6 +34,8 @@
             </div>
           </div>
         </form>
+        <hr>
+        <router-link to="/sign-up">Click here</router-link> to sign up!
       </div>
     </div>
   </div>
@@ -52,42 +54,57 @@ export default {
     }
   },
   methods: {
-    submitForm(e) {
-    axios.defaults.headers.common['Authorization'] = ''
+    async submitForm(e) {
+        axios.defaults.headers.common['Authorization'] = ''
 
-    localStorage.removeItem('token')
+        localStorage.removeItem('token')
 
-    const formData = {
-      username: this.username,
-      password: this.password
-    }
-
-    axios
-      .post('http://127.0.0.1:8000/api/v1/token/login/', formData)
-      .then(response => {
-        const token = response.data.auth_token
-
-        this.$store.commit('setToken', token)
-
-        axios.defaults.headers.common['Authorization'] = 'Token ' + token
-
-        localStorage.setItem("token", token)
-
-        this.$router.push('/dashboard')
-      })
-      .catch(error => {
-        if (error.response) {
-          for (const property in error.response.data) {
-            this.errors.push(`${property}: ${error.response.data[property]}`)
-          }
-          console.log(JSON.stringify(error.response.data))
-        } else if (error.message) {
-          console.log(JSON.stringify(error.message))
-        } else {
-          console.log(JSON.stringify(error))
+        const formData = {
+          username: this.username,
+          password: this.password
         }
-      })
-    }
+
+        await axios
+            .post('http://127.0.0.1:8000/api/v1/token/login/', formData)
+            .then(response => {
+              const token = response.data.auth_token
+
+              this.$store.commit('setToken', token)
+
+              axios.defaults.headers.common['Authorization'] = 'Token ' + token
+
+              localStorage.setItem("token", token)
+
+            })
+            .catch(error => {
+              if (error.response) {
+                for (const property in error.response.data) {
+                  this.errors.push(`${property}: ${error.response.data[property]}`)
+                }
+                console.log(JSON.stringify(error.response.data))
+              } else if (error.message) {
+                console.log(JSON.stringify(error.message))
+              } else {
+                console.log(JSON.stringify(error))
+              }
+            })
+
+        axios
+          .get('http://127.0.0.1:8000/api/v1/users/me')
+          .then(response => {
+            this.$store.commit('setUser', {
+            'username': response.data.username,
+            'id': response.data.id
+            })
+            localStorage.setItem('username', response.data.username)
+            localStorage.setItem('userid', response.data.id)
+
+            this.$router.push('/dashboard')
+          })
+          .catch(error => {
+            console.log(JSON.stringify(error))
+          })
+      }
   }
 }
 </script>
