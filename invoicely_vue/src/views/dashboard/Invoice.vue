@@ -19,8 +19,11 @@
 
         <div class="buttons">
           <button @click="getPdf()" class="button is-dark">Download PDF</button>
-          <button @click="setAsPaid()" class="button is-success" v-if="!invoice.is_paid">Set as paid</button>
-          <button @click="createCreditNote()" class="button is-danger" v-if="!invoice.is_paid">Create credit note</button>
+
+          <template v-if="!invoice.is_credit_for && !invoice.is_credited">
+            <button @click="setAsPaid()" class="button is-success" v-if="!invoice.is_paid">Set as paid</button>
+            <button @click="createCreditNote()" class="button is-danger" v-if="!invoice.is_paid">Create credit note</button>
+          </template>
         </div>
       </div>
 
