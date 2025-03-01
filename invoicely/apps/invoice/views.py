@@ -54,7 +54,13 @@ def generate_pdf(request, invoice_id):
     """Generating PDF"""
     invoice = get_object_or_404(Invoice, pk=invoice_id, created_by=request.user)
     team = Team.objects.filter(created_by=request.user).first()
-    template = get_template('pdf.html')
+
+    template_name = 'pdf.html'
+
+    if invoice.is_credit_for:
+        template_name = 'pdf_creditnote.html'
+
+    template = get_template(template_name)
     html = template.render({'invoice': invoice, 'team': team})
     pdf = pdfkit.from_string(html, False, options={})
 
