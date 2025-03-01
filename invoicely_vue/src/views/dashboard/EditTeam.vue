@@ -39,6 +39,46 @@
         </div>
 
         <div class="field">
+          <label>Email</label>
+
+          <div class="control">
+            <input type="email" class="input" v-model="team.email">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Address</label>
+
+          <div class="control">
+            <input type="text" class="input" v-model="team.address1">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Address Two</label>
+
+          <div class="control">
+            <input type="text" class="input" v-model="team.address2">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Zipcode</label>
+
+          <div class="control">
+            <input type="text" class="input" v-model="team.zipcode">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Place</label>
+
+          <div class="control">
+            <input type="text" class="input" v-model="team.place">
+          </div>
+        </div>
+
+        <div class="field">
           <div class="control">
             <button class="button is-success" @click="submitForm">Save</button>
           </div>
