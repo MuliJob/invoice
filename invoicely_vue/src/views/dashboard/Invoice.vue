@@ -1,5 +1,18 @@
 <template>
   <div class="page-invoice">
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+      <ul>
+        <li>
+          <router-link to="/dashboard">Dashboard</router-link>
+        </li>
+        <li>
+          <router-link to="/dashboard/invoices">Invoices</router-link>
+        </li>
+        <li class="is-active">
+          <router-link :to="{ name: 'Invoice', params: { id: invoice.id }}" aria-current="true">{{ invoice.invoice_number }}</router-link>
+        </li>
+      </ul>
+    </nav>
     <div class="columns is-multiline">
       <div class="column is-12">
         <h1 class="title">Invoices - {{ invoice.invoice_number }}</h1>
