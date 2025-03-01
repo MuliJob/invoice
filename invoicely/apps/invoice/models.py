@@ -56,6 +56,10 @@ class Invoice(models.Model):
         """getting due date"""
         return self.created_at + timedelta(days=self.due_days)
 
+    def get_due_date_formatted(self):
+        """formatted due date"""
+        return self.get_due_date().strftime("%d.%m.%Y")
+
 class Item(models.Model):
     """Items Model"""
     invoice = models.ForeignKey(Invoice, related_name='items', on_delete=models.CASCADE)
