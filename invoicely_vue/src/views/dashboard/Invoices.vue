@@ -35,7 +35,7 @@
               <td>{{ invoice.invoice_number }}</td>
               <td>{{ invoice.client_name }}</td>
               <td>{{ invoice.gross_amount }}</td>
-              <td>{{ invoice.is_paid }}</td>
+              <td>{{ getStatusLabel(invoice) }}</td>
               <td><router-link :to="{ name: 'Invoice', params: { id: invoice.id }}">Details</router-link></td>
             </tr>
           </tbody>
@@ -72,6 +72,13 @@ export default {
         .catch(error => {
           console.log(JSON.stringify(error))
         })
+      },
+      getStatusLabel(invoice) {
+        if (invoice.is_paid) {
+          return 'Yes'
+        } else {
+          return 'No'
+        }
       }
   }
 }
