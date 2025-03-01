@@ -26,6 +26,7 @@
 
 <script>
 import axios from 'axios';
+import { toast } from 'bulma-toast';
 
 export default {
   name: 'MyAccount',
@@ -61,6 +62,14 @@ export default {
           this.$store.commit('removeToken')
 
           this.$router.push("/")
+          toast({
+            message: "You have been logged out",
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: 'bottom-right',
+          })
         })
         .catch(error => {
           if (error.response) {

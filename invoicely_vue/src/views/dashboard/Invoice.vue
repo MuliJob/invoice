@@ -17,7 +17,10 @@
       <div class="column is-12">
         <h1 class="title">Invoices - {{ invoice.invoice_number }}</h1>
 
-        <button @click="getPdf()" class="button is-dark">Download PDF</button>
+        <div class="buttons">
+          <button @click="getPdf()" class="button is-dark">Download PDF</button>
+          <button @click="setAsPaid()" class="button is-success" v-if="!invoice.is_paid">Set as paid</button>
+        </div>
       </div>
 
       <div class="column is-12 mb-4 box">
@@ -91,6 +94,7 @@
 
 <script>
 import axios from 'axios';
+import { toast } from 'bulma-toast';
 
 const fileDownload = require('js-file-download')
 
@@ -150,6 +154,30 @@ export default {
       const total = item.net_amount + (item.net_amount * (item.vat_rate / 100))
 
       return parseFloat(total).toFixed(2)
+    },
+    async setAsPaid() {
+      this.invoice.is_paid = true
+
+      let items = this.invoice.items
+
+      delete this.invoice['items']
+
+      await axios
+        .patch(`http://127.0.0.1:8000/api/v1/invoices/${this.invoice.id}/`, this.invoice)
+        .then(response => {
+          toast({
+            message: "The changes was saved",
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: 'bottom-right',
+          })
+        })
+        .catch(error => {
+          console.log(JSON.stringify(error))
+        })
+      this.invoice.items = items
     }
   }
 }

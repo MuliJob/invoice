@@ -43,6 +43,7 @@
 
 <script>
 import axios from 'axios';
+import { toast } from 'bulma-toast';
 
 export default {
   name: 'SignUp',
@@ -66,6 +67,14 @@ export default {
           console.log(response)
 
           this.$router.push('/log-in')
+          toast({
+            message: "User created successful",
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: 'bottom-right',
+          })
         })
         .catch(error => {
           if (error.response) {
