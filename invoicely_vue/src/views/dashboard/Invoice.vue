@@ -24,6 +24,8 @@
             <button @click="setAsPaid()" class="button is-success" v-if="!invoice.is_paid">Set as paid</button>
             <button @click="createCreditNote()" class="button is-danger" v-if="!invoice.is_paid">Create credit note</button>
           </template>
+
+          <button @click="sendReminder()" class="button is-info" v-if="!invoice.is_paid">Send reminder</button>
         </div>
       </div>
 
@@ -228,6 +230,23 @@ export default {
           })
 
           this.$router.push('/dashboard/invoices')
+        })
+        .catch(error => {
+          console.log(JSON.stringify(error))
+        })
+    },
+    sendReminder() {
+      axios
+        .get(`http://127.0.0.1:8000/api/v1/invoices/${this.invoice.id}/send_reminder`)
+        .then(response => {
+          toast({
+            message: "The reminder was sent",
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: 'bottom-right',
+          })
         })
         .catch(error => {
           console.log(JSON.stringify(error))
