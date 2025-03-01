@@ -20,6 +20,7 @@
         <div class="buttons">
           <button @click="getPdf()" class="button is-dark">Download PDF</button>
           <button @click="setAsPaid()" class="button is-success" v-if="!invoice.is_paid">Set as paid</button>
+          <button @click="createCreditNote()" class="button is-danger" v-if="!invoice.is_paid">Create credit note</button>
         </div>
       </div>
 
@@ -142,7 +143,7 @@ export default {
       }
     },
     getInvoiceType() {
-      if (this.invoice.invoice_type === 'creditnote') {
+      if (this.invoice.invoice_type === 'credit_note') {
         return 'Credit note'
       } else {
         return 'Invoice'
@@ -178,6 +179,56 @@ export default {
           console.log(JSON.stringify(error))
         })
       this.invoice.items = items
+    },
+    async createCreditNote() {
+      this.invoice.is_credited = true
+
+      let items = this.invoice.items
+
+      delete this.invoice['items']
+
+      await axios
+        .patch(`http://127.0.0.1:8000/api/v1/invoices/${this.invoice.id}/`, this.invoice)
+        .then(response => {
+          toast({
+            message: "The changes was saved",
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: 'bottom-right',
+          })
+        })
+        .catch(error => {
+          console.log(JSON.stringify(error))
+        })
+
+      this.invoice.items = items
+
+      let creditNote = this.invoice
+      creditNote.is_credit_for = this.invoice.id
+      creditNote.is_credited = false
+      creditNote.invoice_type = 'credit_note'
+
+      delete creditNote['id']
+
+      await axios
+        .post("http://127.0.0.1:8000/api/v1/invoices/", creditNote)
+        .then(response => {
+          toast({
+            message: "The credit note was created",
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: 'bottom-right',
+          })
+
+          this.$router.push('/dashboard/invoices')
+        })
+        .catch(error => {
+          console.log(JSON.stringify(error))
+        })
     }
   }
 }
