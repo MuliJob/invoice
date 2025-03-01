@@ -25,7 +25,7 @@
             <button @click="createCreditNote()" class="button is-danger" v-if="!invoice.is_paid">Create credit note</button>
           </template>
 
-          <button @click="sendReminder()" class="button is-info" v-if="!invoice.is_paid">Send reminder</button>
+          <button @click="sendReminder()" class="button is-info" v-if="!invoice.is_paid && !invoice.is_credit_for">Send reminder</button>
         </div>
       </div>
 
